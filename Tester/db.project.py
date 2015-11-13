@@ -4,12 +4,17 @@
 # Functions dealing with unranked databases
 # These functions will either work on, or create, unranked databases
 
+filename = "%s.csv"
+print ("filename = ", filename)
 def read_file(filename):
-	pass
+	f = open(filename, 'wb')
+	print ("filename = ", f)
+	
 	# return the resulting database
 
 
 def add_name(db, name, gender, year, count):
+	print ("Do you get here?")
 	pass
 	# return None
 
@@ -48,3 +53,5 @@ def always_popular_names(rdb, gender, years=None, top=10):
 def increasing_rank_names(rdb, gender, old_year, new_year):
 	pass
 	# return list
+
+y = read_file(filename)

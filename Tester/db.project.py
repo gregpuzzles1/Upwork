@@ -4,8 +4,6 @@
 # Functions dealing with unranked databases
 # These functions will either work on, or create, unranked databases
 
-db = {}
-db_pop = {}
 
 def read_file(filename):
 	f = open(filename, 'r')
@@ -13,21 +11,55 @@ def read_file(filename):
 	data = f.readlines()
 	lines = len(data)
 
-	sd = simplify_data(data, lines)
-	#print ("simplify_data(data, lines) = ", sd)
-	#print ("year_names = ", sd[0][1])
-	
+	sd = sorted(simplify_data(data, lines))
+
 	b = babies(sd)
 	y = years(sd)
-	data_base = create_db(sd, b, y)
-	#print ("len of data_base = ", len(data_base))
-	print ("data_base = ", data_base)
-	return data_base
+
+	db = {}
+	db_pop = {}
+
+	for baby in b:
+		db[baby] = None	
+		#print ("data_baseABOVE = ", db)
+		for jj in range(0, len(sd)):
+			record = sd[jj]
+			year = record[0]
+			name = record[2]
+			gender = record[1]
+			popularity = (record[3], None, record[2])
+			baby_name = (record[2], record[1])
+			#popularities.append(popularity)
+			#db_pop[year] = popularity
+			#db_pop = {year: popularity}
+			tmp_pop = {year: (popularity)}
+			tmp = {(baby_name): tmp_pop}
+			#db_pop = {year: (popularity)}
+			db_pop.update(tmp_pop)
+			print ("DB_POP = ", db_pop)
+
+			db.update(tmp)
+
+			x = db[baby_name][year][2]
+			print ("db[baby_name][year][2] = ", x)
+			#db = {(baby_name): db_pop}
+			"""if year not in db_pop:
+				db_pop = {year: popularity}
+				print ("db_POP = ", db_pop)
+				db.update(db_pop)
+
+				db = {baby_name : db_pop}	
+
+				#db = db_pop"""
+					
+
+	print ("data_base = ", db)
+	print ("lEN of DB = ", len(db))
+	return db
 
 def simplify_data(data, lines):
 
 	simpledata = []
-	year_names = []
 
 	for line in range(0, lines):
 		line = data[line].replace('"', '').split(',')
@@ -41,11 +73,8 @@ def simplify_data(data, lines):
 
 		s = year, gender, name, count
 		simpledata.append(s)
-
-		year_name = (line[2], line[0])
-		year_names.append(year_name)
-	#print ("YEAR_NAMES = ", year_names)	
-	return (simpledata, year_names)
+	
+	return (simpledata)
 
 def create_db(sd, b, y):
 	
@@ -54,8 +83,8 @@ def create_db(sd, b, y):
 	pop_record = []
 	year_names = []
 
-	for jj in range(0, len(sd[0])):
-		record = sd[0][jj]
+	for jj in range(0, len(sd)):
+		record = sd[jj]
 		year = record[0]
 		name = record[2]
 		gender = record[1]
@@ -68,22 +97,21 @@ def create_db(sd, b, y):
 
 def babies(sd):
 	babies = []
-	for i in range(0, len(sd[0])):
-		record = sd[0][i]
+	for i in range(0, len(sd)):
+		record = sd[i]
 		name = record[2]
 		gender = record[1]
 		year = record[0]
 		baby = (name, gender)
 		if baby not in babies:
 			babies.append(baby)
-	#print ("BABIES = ", babies)
-	#print ("len babies = ", len(babies))
+
 	return babies
 
 def years(sd):
 	years = []
-	for i in range(0, len(sd[0])):
-		record = sd[0][i]
+	for i in range(0, len(sd)):
+		record = sd[i]
 		year = record[0]
 		if year not in years:
 			years.append(year)
@@ -95,7 +123,7 @@ def test(sd):
 
 
 def add_name(db, name, gender, year, count):
-	"""function is called from create_db function - adds a name each time called"""
+
 	popularity = (count, None, name)
 	baby_record = (name, gender)
 	db_pop[year] = popularity
@@ -147,7 +175,7 @@ def increasing_rank_names(rdb, gender, old_year, new_year):
 def main():
 	filename = "small.csv"
 	x = read_file(filename)
-	print ("database = ", x)
+	#print ("database = ", x)
 
 
 if __name__ == '__main__':

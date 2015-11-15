@@ -5,60 +5,94 @@
 # These functions will either work on, or create, unranked databases
 
 
-
 def read_file(filename):
-	d1 = {}
-	d2 = {}
-	dbkeys_persons = []
-	dbvalues_pop = []
+	db1 = {}
+	db2 = {}
+	persons = []
+	popularities = []
+	names_list = []
+	year_list = []
 
 	f = open(filename, 'r')
 	#data = sorted(f.readlines())
-	data = sorted(f.readlines())
+	data = f.readlines()
 	lines = len(data)
-	print ("lines = ", lines)
-	print ("data = ", data)
+
+	sd = simplify_data(data, lines)
+	print ("simplify_data(data, lines) = ", sd)
+	print ("year_names = ", sd[0][1])
+
+
+"""def yrnames(data, lines):
+
+	year_names = []
+
+	simplify_data(data, lines)
+
+	year_name = (line[2], line[0])
+	year_names.append(year_name)
+
+	#return year_names"""
+
+def simplify_data(data, lines):
+
+	simpledata = []
+	year_names = []
+
 	for line in range(0, lines):
-		line = data[line].replace('"', '')
-		line = line.split(',')
-		print ("line = ", line)
-		for dbitem in range(0, len(line)):
-			if dbitem == 0:
-				year = line[dbitem]
-			elif dbitem == 1:
-				gender = line[dbitem]
-			elif dbitem == 2:
-				name = line[dbitem]
-			elif dbitem == 3:
-				count = line[dbitem]
-			else:
-				print ("ERROR MESSAGE")
+		line = data[line].replace('"', '').split(',')
+		line[3] = line[3].replace('\n', '')
+		#print ("line = ", line, '\n')
+
+		year = line[0]
+		gender = line[1]
+		name = line[2]
+		count = line[3]
+
+		s = year, gender, name, count
+		simpledata.append(s)
+
+		year_name = (line[2], line[0])
+		year_names.append(year_name)
+
+	return (simpledata, year_names)
+
+		#print ("xx = ", year, gender, name, count)
+
+	"""if line[0] != 'YEAR':
+
 
 	# Create the lists that will be used in the databases.
 	# Lists were initialized at the beginning of the funcion
 
-		# create name/gender key
-		dbkey_person = (name, gender)
-		if dbkey_person != ('NAME', 'GENDER'):
-			dbkeys_persons.append(dbkey_person)
-			print ("dbkeys_persons = ", dbkeys_persons)
+			# set all ranking to None
+			ranking = None 
 
-		# create count/rank value
-		count = line[dbitem].replace('\n', '')
-		dbvalue_pop = (count, None)
-		if dbvalue_pop != ('COUNT', None):
-			dbvalue_pop = (count, None)
-			dbvalues_pop.append(dbvalue_pop)
-			print ("dbvalue_popularitys = ", dbvalues_pop)
+			# create name/gender key list
+	
 
-		# create pop_record
-		print ("dbvalue_pop =", dbvalue_pop)
-		d1[year] = dbvalue_pop
-		print ("d1 {} =", dbkey_person, d1)
+			person = (name, gender)
+			persons.append(person)
+			print ("persons = ", persons, '\n')
 
-		d2[d1] = dbkey_person
-		print ("d2 {} = ", d2)
+			#if year == 2010 and 
 
+			# create count/rank value list
+			# pop = popluarity
+			count = line[3]
+			popularity = (count, ranking, name)
+			popularities.append(popularity)
+			print ("popularities = ", popularities, '\n')
+			print ("popularities[0][2] = ", popularities[0][2])
+
+
+			db1[year] = popularity
+			print ("db1 = ", person, db1)
+
+			db2 = {person: db1}
+			print ("db2 = ", db2, '\n')
+
+	return db2"""	
 
 	# return the resulting database
 
@@ -84,7 +118,12 @@ def rank_names(db):
 	# this function should return None
 
 def popularity_by_name(rdb, name, gender):
-	pass
+	ranking = None 
+	count = line[dbitem]
+	popularity = (count, ranking)
+	popularities.append(popularity)
+	print ("popularitys = ", popularities, '\n')
+	
 	# It finds the popularity counts for all years included in the db for name,
 	# assemble them in a list of tuples (year, rank), and return the list. If
 	# db has no records for name, return []. Sort multiple years’ records (tuples) by year
@@ -105,7 +144,8 @@ def increasing_rank_names(rdb, gender, old_year, new_year):
 
 def main():
 	filename = "small.csv"
-	read_file(filename)
+	x = read_file(filename)
+	print ("database = ", x)
 
 
 if __name__ == '__main__':

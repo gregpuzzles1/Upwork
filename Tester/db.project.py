@@ -4,35 +4,25 @@
 # Functions dealing with unranked databases
 # These functions will either work on, or create, unranked databases
 
+db = {}
+db_pop = {}
 
 def read_file(filename):
-	db1 = {}
-	db2 = {}
-	persons = []
-	popularities = []
-	names_list = []
-	year_list = []
-
 	f = open(filename, 'r')
 	#data = sorted(f.readlines())
 	data = f.readlines()
 	lines = len(data)
 
 	sd = simplify_data(data, lines)
-	print ("simplify_data(data, lines) = ", sd)
-	print ("year_names = ", sd[0][1])
-
-
-"""def yrnames(data, lines):
-
-	year_names = []
-
-	simplify_data(data, lines)
-
-	year_name = (line[2], line[0])
-	year_names.append(year_name)
-
-	#return year_names"""
+	#print ("simplify_data(data, lines) = ", sd)
+	#print ("year_names = ", sd[0][1])
+	
+	b = babies(sd)
+	y = years(sd)
+	data_base = create_db(sd, b, y)
+	#print ("len of data_base = ", len(data_base))
+	print ("data_base = ", data_base)
+	return data_base
 
 def simplify_data(data, lines):
 
@@ -42,8 +32,8 @@ def simplify_data(data, lines):
 	for line in range(0, lines):
 		line = data[line].replace('"', '').split(',')
 		line[3] = line[3].replace('\n', '')
-		#print ("line = ", line, '\n')
-
+		if line[0] == "YEAR":
+			continue
 		year = line[0]
 		gender = line[1]
 		name = line[2]
@@ -54,51 +44,63 @@ def simplify_data(data, lines):
 
 		year_name = (line[2], line[0])
 		year_names.append(year_name)
-
+	#print ("YEAR_NAMES = ", year_names)	
 	return (simpledata, year_names)
 
-		#print ("xx = ", year, gender, name, count)
-
-	"""if line[0] != 'YEAR':
-
-
-	# Create the lists that will be used in the databases.
-	# Lists were initialized at the beginning of the funcion
-
-			# set all ranking to None
-			ranking = None 
-
-			# create name/gender key list
+def create_db(sd, b, y):
 	
+	ranking = None # set all ranking to None - unranked db
 
-			person = (name, gender)
-			persons.append(person)
-			print ("persons = ", persons, '\n')
+	pop_record = []
+	year_names = []
 
-			#if year == 2010 and 
+	for jj in range(0, len(sd[0])):
+		record = sd[0][jj]
+		year = record[0]
+		name = record[2]
+		gender = record[1]
+		count = record[3]
+		add_names_db = add_name(db, name, gender, year, count)
+		print ("DB = ", add_names_db)
+		print ("LEN = ", len(add_names_db))
+	print ("LEN FINAL = ", len(add_names_db))
+	return add_names_db
 
-			# create count/rank value list
-			# pop = popluarity
-			count = line[3]
-			popularity = (count, ranking, name)
-			popularities.append(popularity)
-			print ("popularities = ", popularities, '\n')
-			print ("popularities[0][2] = ", popularities[0][2])
+def babies(sd):
+	babies = []
+	for i in range(0, len(sd[0])):
+		record = sd[0][i]
+		name = record[2]
+		gender = record[1]
+		year = record[0]
+		baby = (name, gender)
+		if baby not in babies:
+			babies.append(baby)
+	#print ("BABIES = ", babies)
+	#print ("len babies = ", len(babies))
+	return babies
+
+def years(sd):
+	years = []
+	for i in range(0, len(sd[0])):
+		record = sd[0][i]
+		year = record[0]
+		if year not in years:
+			years.append(year)
+	return years
 
 
-			db1[year] = popularity
-			print ("db1 = ", person, db1)
+def test(sd):
+	pass
 
-			db2 = {person: db1}
-			print ("db2 = ", db2, '\n')
-
-	return db2"""	
-
-	# return the resulting database
 
 def add_name(db, name, gender, year, count):
-	print ("Do you get here?")
-	pass
+	"""function is called from create_db function - adds a name each time called"""
+	popularity = (count, None, name)
+	baby_record = (name, gender)
+	db_pop[year] = popularity
+	db[baby_record] = db_pop 
+	return db
 	# return None
 
 def new_names(db, gender, old_year, new_year):

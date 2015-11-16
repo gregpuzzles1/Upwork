@@ -60,10 +60,6 @@ def simplify_data(data, lines):
 	
 	return (simpledata)
 
-def get_len_of_simplified_data():
-	pass
-
-
 def add_name(db, name, gender, year, count, lines):
 	for key in db:
 		#for jj in range(0, lines):

@@ -62,16 +62,16 @@ def simplify_data(data, lines):
 	
 	return (simpledata)
 
-<<<<<<< HEAD
 
 def add_name(db, name, gender, year, count):
 	"""Adds the inner dictionary to the main db dictionary"""
 	rank = None # set all ranking to None - unranked db
 	popularity = (count, rank, name)
 	baby_name = (name, gender)
-=======
+
+
 def add_name(db, name, gender, year, count, lines):
->>>>>>> working
+	
 	for key in db:
 		if name == key[0]:
 			db[baby_name][year] = popularity

@@ -9,11 +9,11 @@ simpledata = []
 
 def read_file(filename):
 	f = open(filename, 'r')
-	#data = sorted(f.readlines())
-	data = f.readlines()
+	data = sorted(f.readlines())
+	#data = f.readlines()
 	lines = len(data)
 
-	sd = simplify_data(data, lines)
+	sd = simplify_data(data, lines) # simplifies the data into a list
 
 	for jj in range(0, len(sd)): 
 		record = sd[jj]
@@ -21,26 +21,13 @@ def read_file(filename):
 		gender = record[1]
 		year = record[0]
 		count = record[3]
-		baby_name = (name, gender)
 
-		test(db, name, gender, year, count)
-		db[baby_name] = {} # Create main Database (unranked) keys
-
-		#add_name(db, name, gender, year, count, lines)
-	print ("DATA BASE UPPER = ", db)
-
-	for jj in range(0, len(sd)):
-		record = sd[jj]
-		year = record[0]
-		name = record[2]
-		gender = record[1]
-		count = record[3]
-
-		add_name(db, name, gender, year, count)		
+		add_name(db, name, gender, year, count)	# calls the add_name function
 
 	print ("data_base = ", db)
 	print ("lEN of DB = ", len(db))
 	return db
+
 def test(db, name, gender, year, count):
 	pass
 
@@ -65,17 +52,36 @@ def simplify_data(data, lines):
 
 
 def add_name(db, name, gender, year, count):
-	"""Adds the inner dictionary to the main db dictionary"""
-	rank = None # set all ranking to None - unranked db
-	popularity = (count, rank, name)
-	baby_name = (name, gender)
-	for key in db:
-		if name == key[0]:
-			db[baby_name][year] = popularity
-		else:
-			continue			
+	"""Adds name, gender, year, and count to dictionary database"""
+	sd = simpledata
 
-	print ("SIMPLEDATA = ", simpledata)
+	for jj in range(0, len(sd)): 
+		record = sd[jj]
+		name = record[2]
+		gender = record[1]
+		year = record[0]
+		count = record[3]
+		baby_name = (name, gender)
+
+		db[baby_name] = {} # Create main Database (unranked) keys
+
+	for jj in range(0, len(sd)):
+		record = sd[jj]
+		year = record[0]
+		name = record[2]
+		gender = record[1]
+		count = record[3]
+
+		rank = None # set all ranking to None - unranked db
+		popularity = (count, rank, name)
+		baby_name = (name, gender)
+
+		for key in db:
+			if name == key[0]:
+				db[baby_name][year] = popularity # Creates the inner Database (unranked)
+			else:
+				continue			
+
 	return None
 
 def new_names(db, gender, old_year, new_year):

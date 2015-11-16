@@ -5,7 +5,6 @@
 # These functions will either work on, or create, unranked databases
 
 db = {}
-db_pop = {}
 
 #lines = 0
 
@@ -17,30 +16,26 @@ def read_file(filename):
 
 	sd = simplify_data(data, lines)
 
-	# Create main Database (unranked) keys
 	ranking = None # set all ranking to None - unranked db
+
+	for jj in range(0, len(sd)): # Create main Database (unranked) keys
+		record = sd[jj]
+		year = record[0]
+		name = record[2]
+		gender = record[1]
+		count = record[3]
+		baby_name = (name, gender)
+
+		db[baby_name] = {}
+		#add_name(db, name, gender, year, count, lines)
+	print ("DATA BASE UPPER = ", db)
 
 	for jj in range(0, len(sd)):
 		record = sd[jj]
 		year = record[0]
 		name = record[2]
 		gender = record[1]
-		count = record[3]
-		#popularity = (record[3], ranking, record[2], year)
-		#add_name(db, name, gender, year, count, lines)
-		baby_name = (name, gender)
-
-		db[baby_name] = {}
-		#add_name(db, name, gender, year, count, lines)
-	print ("DATA BASE UPPER = ", db)
-	for key in db:
-
-		for jj in range(0, len(sd)):
-			record = sd[jj]
-			year = record[0]
-			name = record[2]
-			gender = record[1]
-			add_name(db, name, gender, year, count, lines)		
+		add_name(db, name, gender, year, count, lines)		
 
 	print ("data_base = ", db)
 	print ("lEN of DB = ", len(db))
@@ -71,12 +66,12 @@ def get_len_of_simplified_data():
 
 def add_name(db, name, gender, year, count, lines):
 	for key in db:
-		for jj in range(0, lines):
-			popularity = (count, None, name)
-			baby_name = (name, gender)
+		#for jj in range(0, lines):
+		popularity = (count, None, name)
+		baby_name = (name, gender)
 
-			if name == key[0]:
-				db[baby_name][year] = popularity			
+		if name == key[0]:
+			db[baby_name][year] = popularity			
 
 	return None
 

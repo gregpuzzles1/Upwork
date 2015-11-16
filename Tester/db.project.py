@@ -16,17 +16,17 @@ def read_file(filename):
 
 	sd = simplify_data(data, lines)
 
-	ranking = None # set all ranking to None - unranked db
-
-	for jj in range(0, len(sd)): # Create main Database (unranked) keys
+	for jj in range(0, len(sd)): 
 		record = sd[jj]
-		year = record[0]
 		name = record[2]
 		gender = record[1]
+		year = record[0]
 		count = record[3]
 		baby_name = (name, gender)
 
-		db[baby_name] = {}
+		test(db, name, gender, year, count)
+		db[baby_name] = {} # Create main Database (unranked) keys
+
 		#add_name(db, name, gender, year, count, lines)
 	print ("DATA BASE UPPER = ", db)
 
@@ -35,14 +35,18 @@ def read_file(filename):
 		year = record[0]
 		name = record[2]
 		gender = record[1]
-		add_name(db, name, gender, year, count, lines)		
+		count = record[3]
+
+		add_name(db, name, gender, year, count)		
 
 	print ("data_base = ", db)
 	print ("lEN of DB = ", len(db))
-	#return db
+	return db
+def test(db, name, gender, year, count):
+	pass
 
 def simplify_data(data, lines):
-
+	"""Loops thru the lines in .csv file and creates a list of 4 field tuples"""
 	simpledata = []
 
 	for line in range(0, lines):
@@ -60,18 +64,17 @@ def simplify_data(data, lines):
 	
 	return (simpledata)
 
-def get_len_of_simplified_data():
-	pass
 
-
-def add_name(db, name, gender, year, count, lines):
+def add_name(db, name, gender, year, count):
+	"""Adds the inner dictionary to the main db dictionary"""
+	rank = None # set all ranking to None - unranked db
+	popularity = (count, rank, name)
+	baby_name = (name, gender)
 	for key in db:
-		#for jj in range(0, lines):
-		popularity = (count, None, name)
-		baby_name = (name, gender)
-
 		if name == key[0]:
-			db[baby_name][year] = popularity			
+			db[baby_name][year] = popularity
+		else:
+			continue			
 
 	return None
 

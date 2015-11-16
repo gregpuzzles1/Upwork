@@ -6,8 +6,6 @@
 
 db = {}
 
-#lines = 0
-
 def read_file(filename):
 	f = open(filename, 'r')
 	#data = sorted(f.readlines())

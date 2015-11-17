@@ -30,32 +30,57 @@ def read_file(filename):
 			gender = record[1]
 			year = record[0]
 			count = record[3]
-			print ("db.get(name) = ", db.get('name'))
-			print ("TEST - Db[0] = ", db)
+
+			#print ("TEST - Db[0] = ", db)
 			for key, value in db:
 				pass
 				#print ("key = ", key)
 				#print ("value = ", value)
-
+	test(db)
 	print ("data_base = ", db)
 	print ("lEN of DB = ", len(db))
 	return db
+def years(current):
+	sd = simpledata
+	years = []
+	genders = []
+	all_items = []
+	for i in range(0, len(sd)):
+		year = sd[i][0]
+		if year not in years:
+			years.append(sd[i][0])
+		gender = sd[i][1]
+		if gender not in genders:
+			genders.append(gender)
+		name = sd[i][2]
+		year = sd[i][0]
+		items = (name, year)
+		all_items.append(items)
 
+	old_year = years[0]
+	new_year = years[1]
+	new_names(db, genders, old_year, new_year)
+
+	
+	for mainKey in db:
+		for key, val in db[mainKey].items():
+			inner = db[mainKey].items()
+		#print ("INNER = ", inner)
 def test(db):
-	"""for jj in range(0, len(sd)): 
-		record = sd[jj]
-		name = record[2]
-		gender = record[1]
-		year = record[0]
-		count = record[3]
-		print ("db.get(name) = ", db.get(name))
-		print ("TEST - Db[0] = ", db)
-		for key, value in db:
+	current = []
+
+	for mainKey in db:
+		print (mainKey)
+		for key, val in db[mainKey].items():
+			print (key,val[0])
+			print (mainKey[0], key)
+			current.append((mainKey[0], key))
+	for item in sorted(current):
+		print ("ITEM = ", item)
+	years(current)
 	
-			print ("key = ", key)
-			print ("value = ", value)"""
-	pass
-	
+	#print (new[0][1])
+
 
 def simplify_data(data, lines):
 	"""Loops thru the lines in .csv file and creates a list of 4 tuples for each baby"""

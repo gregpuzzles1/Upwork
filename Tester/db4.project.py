@@ -149,7 +149,7 @@ def new_names(db, gender, old_year, new_year):
 			else:
 				placeholder1 = False
 
-			if not placeholder and placeholder1:
+			if placeholder == False and placeholder1 == True:
 				print ("mainKey[0], year = ", mainKey[0], year)
 				newbie = (mainKey[0], year)
 				new.append(newbie)

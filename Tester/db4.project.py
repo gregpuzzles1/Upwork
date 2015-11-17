@@ -24,19 +24,41 @@ def read_file(filename):
 
 		add_name(db, name, gender, year, count)	# calls the add_name function
 
+		for jj in range(0, len(sd)): 
+			record = sd[jj]
+			name = record[2]
+			gender = record[1]
+			year = record[0]
+			count = record[3]
+			print ("db.get(name) = ", db.get('name'))
+			print ("TEST - Db[0] = ", db)
+			for key, value in db:
+				pass
+				#print ("key = ", key)
+				#print ("value = ", value)
+
 	print ("data_base = ", db)
 	print ("lEN of DB = ", len(db))
 	return db
 
-def test(db, name, gender, year, count):
+def test(db):
+	"""for jj in range(0, len(sd)): 
+		record = sd[jj]
+		name = record[2]
+		gender = record[1]
+		year = record[0]
+		count = record[3]
+		print ("db.get(name) = ", db.get(name))
+		print ("TEST - Db[0] = ", db)
+		for key, value in db:
+	
+			print ("key = ", key)
+			print ("value = ", value)"""
 	pass
+	
 
 def simplify_data(data, lines):
-<<<<<<< HEAD
-	"""Loops thru the lines in .csv file and creates a list of 4 field tuples"""
-=======
 	"""Loops thru the lines in .csv file and creates a list of 4 tuples for each baby"""
->>>>>>> working
 	#simpledata = []
 
 	for line in range(0, lines):
@@ -59,21 +81,9 @@ def add_name(db, name, gender, year, count):
 	"""Adds name, gender, year, and count to dictionary database"""
 	sd = simpledata
 
-<<<<<<< HEAD
-	for jj in range(0, len(sd)): 
-		record = sd[jj]
-		name = record[2]
-		gender = record[1]
-		year = record[0]
-		count = record[3]
-		baby_name = (name, gender)
-
-		db[baby_name] = {} # Create main Database (unranked) keys
-=======
 	baby_name = (name, gender)
 
 	db[baby_name] = {} # Create main Database (unranked) keys
->>>>>>> working
 
 	for jj in range(0, len(sd)):
 		record = sd[jj]
@@ -139,6 +149,7 @@ def main():
 	filename = "small.csv"
 	x = read_file(filename)
 	#print ("database = ", x)
+	test(x)
 
 
 if __name__ == '__main__':

@@ -32,11 +32,7 @@ def test(db, name, gender, year, count):
 	pass
 
 def simplify_data(data, lines):
-<<<<<<< HEAD
-	"""Loops thru the lines in .csv file and creates a list of 4 field tuples"""
-=======
 	"""Loops thru the lines in .csv file and creates a list of 4 tuples for each baby"""
->>>>>>> working
 	#simpledata = []
 
 	for line in range(0, lines):
@@ -59,21 +55,9 @@ def add_name(db, name, gender, year, count):
 	"""Adds name, gender, year, and count to dictionary database"""
 	sd = simpledata
 
-<<<<<<< HEAD
-	for jj in range(0, len(sd)): 
-		record = sd[jj]
-		name = record[2]
-		gender = record[1]
-		year = record[0]
-		count = record[3]
-		baby_name = (name, gender)
+	#baby_name = (name, gender)
 
-		db[baby_name] = {} # Create main Database (unranked) keys
-=======
-	baby_name = (name, gender)
-
-	db[baby_name] = {} # Create main Database (unranked) keys
->>>>>>> working
+	#db[baby_name] = {} # Create main Database (unranked) keys
 
 	for jj in range(0, len(sd)):
 		record = sd[jj]

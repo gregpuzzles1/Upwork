@@ -36,37 +36,30 @@ def read_file(filename):
 				pass
 				#print ("key = ", key)
 				#print ("value = ", value)
-	test(db)
 	print ("data_base = ", db)
 	print ("lEN of DB = ", len(db))
 	return db
-def years(current):
+
+def get_genders():
+	sd = simpledata
+	genders = []
+	for i in range(0, len(sd)):
+		gender = sd[i][1]
+		if gender not in genders:
+			genders.append(gender)
+	return genders
+
+def get_years():
 	sd = simpledata
 	years = []
 	genders = []
-	all_items = []
 	for i in range(0, len(sd)):
 		year = sd[i][0]
 		if year not in years:
 			years.append(sd[i][0])
-		gender = sd[i][1]
-		if gender not in genders:
-			genders.append(gender)
-		name = sd[i][2]
-		year = sd[i][0]
-		items = (name, year)
-		all_items.append(items)
+	return years
 
-	old_year = years[0]
-	new_year = years[1]
-	new_names(db, genders, old_year, new_year)
-
-	
-	for mainKey in db:
-		for key, val in db[mainKey].items():
-			inner = db[mainKey].items()
-		#print ("INNER = ", inner)
-def test(db):
+"""def test(db):
 	current = []
 
 	for mainKey in db:
@@ -77,9 +70,7 @@ def test(db):
 			current.append((mainKey[0], key))
 	for item in sorted(current):
 		print ("ITEM = ", item)
-	years(current)
-	
-	#print (new[0][1])
+	years(current)"""
 
 
 def simplify_data(data, lines):
@@ -130,7 +121,46 @@ def add_name(db, name, gender, year, count):
 	return None
 
 def new_names(db, gender, old_year, new_year):
-	pass
+
+	new = [] # initialize the list of new name
+	for mainKey in db:
+
+		years = [] # initialize the years list
+		sorted_db = sorted(db[mainKey].items())
+
+		for year, value in sorted_db:
+			if year not in years:
+				years.append(year) # create a years list
+			else:
+				continue
+
+		#print ("KEYS = ", years)
+		#print ("NAME = ", mainKey[0])
+		for year, value in sorted_db:
+			print ("Year = ", year)
+			print ("value = ", value)
+			print (old_year, new_year)
+			if old_year == year:
+				placeholder = True
+			else:
+				placeholder = False
+			if new_year == year:
+				placeholder1 = True
+			else:
+				placeholder1 = False
+
+			if not placeholder and placeholder1:
+				print ("mainKey[0], year = ", mainKey[0], year)
+				newbie = (mainKey[0], year)
+				new.append(newbie)
+				print ("newbie = ", newbie)
+				print ("new = ", new)
+				break
+			else:
+				continue
+	#print ("new = ", new)
+	return new
+
 	# return qualified names as a list of strings, alphabetically sorted
 
 #################################################################################################
@@ -174,8 +204,17 @@ def main():
 	filename = "small.csv"
 	x = read_file(filename)
 	#print ("database = ", x)
-	test(x)
-
+	years = get_years()
+	genders = get_genders()
+	for i in range(0, len(years)):
+		current_year = years[i]
+		maxim = len(years)
+		if current_year != years[maxim - 1]:
+			old_year = years[i]
+			new_year = years[i + 1]
+			new_names(db, genders, old_year, new_year)
+		else:
+			break
 
 if __name__ == '__main__':
 	main()

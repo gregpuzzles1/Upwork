@@ -8,6 +8,7 @@ db = {}
 simpledata = []
 
 def read_file(filename):
+	"""Accepts a file, opens it, reads it line by line, simplifies the data, then adds names to the data base"""
 	f = open(filename, 'r') # opens file for reading
 	data = sorted(f.readlines())
 	#data = f.readlines()
@@ -25,19 +26,11 @@ def read_file(filename):
 		add_name(db, name, gender, year, count)	# calls the add_name function
 
 	print ("data_base = ", db)
-	print ("lEN of DB = ", len(db))
+	print ("lEN of DB = ", len(db), '\n')
 	return db
 
-def get_genders():
-	sd = simpledata
-	genders = []
-	for i in range(0, len(sd)):
-		gender = sd[i][1]
-		if gender not in genders:
-			genders.append(gender)
-	return genders
-
 def get_years_male():
+	"""Gets the years any male record is in the database"""
 	sd = simpledata
 	years_male = []
 	genders = []
@@ -48,6 +41,7 @@ def get_years_male():
 	return years_male
 
 def get_years_female():
+	"""Gets the years any female record is in the database"""
 	sd = simpledata
 	years_female = []
 	genders = []
@@ -73,20 +67,19 @@ def get_years_female():
 
 def simplify_data(data, lines):
 	"""Loops thru the lines in .csv file and creates a list of 4 tuples for each baby"""
-	#simpledata = []
 
 	for line in range(0, lines):
-		line = data[line].replace('"', '').split(',')
-		line[3] = line[3].replace('\n', '')
-		if line[0] == "YEAR":
-			continue
+		line = data[line].replace('"', '').split(',') # strips off the quotes and splits items by the ','
+		line[3] = line[3].replace('\n', '') # deletes the '\n' character at the end of each line
+		if line[0] == "YEAR": 	# skips the first line
+			continue			# skips the first line
 		year = line[0]
 		gender = line[1]
 		name = line[2]
 		count = line[3]
 
 		s = year, gender, name, count
-		simpledata.append(s)
+		simpledata.append(s) # adds a record to the list
 	
 	return (simpledata)
 
@@ -118,28 +111,43 @@ def add_name(db, name, gender, year, count):
 
 	return None
 
+def find_baby_years(baby_years, sorted_db):
+	"""Finds all years for particular name"""
+	for year, value in sorted_db:
+		baby_years.append(year)
+	return baby_years
+
 def new_names(db, gender, old_year, new_year):
+	"""Finds names that are new from year to year"""
+	new = [] # initialize the list for new names
 
-	new = [] # initialize the list of new name
-	for mainKey in db:
-		baby_years = []
-		if mainKey[1] == gender:
-			sorted_db = sorted(db[mainKey].items())
-			for year, value in sorted_db:
-				print ("YEAR / VALUE = ", year, value)
-				baby_years.append(year)
-			print ("BABY YEARS = ", baby_years)
-			if old_year in baby_years and new_year in baby_years:
-				continue
-			elif old_year not in baby_years and new_year in baby_years:
-				new_baby = (mainKey[0], new_year)
-				new.append(new_baby)
+	if gender == "MALE":
+		years = sorted(get_years_male())
+	else:
+		years = sorted(get_years_female())
+	
+	for i in range(1, len(years)):
+		for mainKey in db:
+			if mainKey[1] == gender:
+				baby_years = []
+				sorted_db = sorted(db[mainKey].items())
+				find_baby_years(baby_years, sorted_db) # calls find_baby_years function 
+				if old_year not in baby_years and new_year in baby_years:
+					new_baby = (mainKey[0], new_year)
+					new.append(new_baby)
+				else:
+					continue
+
+		current_year = years[i]
+		maxim = len(years)
+		if current_year == years[maxim - 1]:
+			break
 		else:
-			continue
+			old_year = years[i]
+			new_year = years[i + 1]
 
-			
-	print ("new = ", new)
-	return new
+	print ("new names and year for {}S are = ".format(gender), sorted(new), '\n')
+	return sorted(new)
 
 	# return qualified names as a list of strings, alphabetically sorted
 
@@ -188,33 +196,22 @@ def increasing_rank_names(rdb, gender, old_year, new_year):
 	# return list
 
 def main():
-	filename = "small.csv"
+	filename = "small-modified.csv"
 	x = read_file(filename) # calls the read_file function as sends it filename
 	#print ("database = ", x)
-
-	gender = sorted(get_genders())
-
-	for j in range(0, len(gender)): # loop thru for Males and Females
-		if gender[j] == "MALE":
-			years = sorted(get_years_male())
-			print("GENDER YEARS MALE = ", years)
+	old_year = get_years_male()[0]
+	new_year = get_years_male()[1]
+	for gender in ("MALE", "FEMALE"):
+		if gender == "MALE":
+			old_year = get_years_male()[0]
+			new_year = get_years_male()[1]
 		else:
-			years = sorted(get_years_female())
-			print("GENDER YEARS FEMALE = ", years)
+			old_year = get_years_female()[0]
+			new_year = get_years_female()[1]
 
-		for i in range(0, len(years)):
-			current_year = years[i]
-			maxim = len(years)
-			if current_year == years[maxim - 1]:
-				#rank_names_for_one_year(db, years[i])
-				continue
-			else:
-				old_year = years[i]
-				new_year = years[i + 1]
-				new_names(db, gender[j], old_year, new_year)
+		new_names(db, gender, old_year, new_year)
 
-				#rank_names_for_one_year(db, year[i])
+	#rank_names_for_one_year(db, year[i])
 
- 
 if __name__ == '__main__':
 	main()

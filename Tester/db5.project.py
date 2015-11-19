@@ -33,23 +33,31 @@ def get_years_male():
 	"""Gets the years any male record is in the database"""
 	sd = simpledata
 	years_male = []
-	genders = []
 	for i in range(0, len(sd)):
 		year = sd[i][0]
 		if year not in years_male and sd[i][1] == "MALE":
-			years_male.append(sd[i][0])
+			years_male.append(year)
 	return years_male
 
 def get_years_female():
 	"""Gets the years any female record is in the database"""
 	sd = simpledata
 	years_female = []
-	genders = []
 	for i in range(0, len(sd)):
 		year = sd[i][0]
 		if year not in years_female and sd[i][1] == "FEMALE":
-			years_female.append(sd[i][0])
+			years_female.append(year)
 	return years_female
+
+def get_all_years():
+	sd = simpledata
+	all_years = []
+	for i in range(0, len(sd)):
+		year = sd[i][0]
+		if year not in all_years:
+			all_years.append(year)
+	return all_years
+
 
 """def test(db):
 	current = []
@@ -156,15 +164,25 @@ def new_names(db, gender, old_year, new_year):
 # Functions dealing with ranked databases
 
 def rank_names_for_one_year(db, year):
+	count_list = []
 	for mainKey in db:
+		#print (list(db[mainKey].values()))
 		sorted_db = sorted(db[mainKey].items())
 		for key, value in sorted_db:
 			print (key, value[0])
 			if year == key:
-				print ("year / key = ", year, key)
+				print ("year / key = ", mainKey[0], year, key, value[0])
+				count_list.append(int(value[0]))
+
+		print ("COUNT LIST = ", count_list)
+		sorted(count_list, key = getValue)
+		print ("SORTED COUNT LIST = ", count_list)
 
 	return None
 	# this function should return None
+
+def getValue(item):
+	return item[0]
 
 def rank_names(db):
 	pass
@@ -211,7 +229,10 @@ def main():
 
 		new_names(db, gender, old_year, new_year)
 
-	#rank_names_for_one_year(db, year[i])
+	all_years = get_all_years()
+	for jj in range(0, len(all_years)):
+		year = all_years[jj]
+		rank_names_for_one_year(db, year)
 
 if __name__ == '__main__':
 	main()

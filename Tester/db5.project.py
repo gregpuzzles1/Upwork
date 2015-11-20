@@ -177,7 +177,7 @@ def rank_names_for_one_year(db, year):
 					print (key, value[0])
 					if year == key:
 						print ("year / key = ", mainKey[0], year, key, value[0])
-						baby_count = (mainKey[0], int(value[0]))
+						baby_count = (mainKey[0], int(value[0]), year)
 						count_list.append(baby_count)
 					else:
 						continue	
@@ -186,8 +186,14 @@ def rank_names_for_one_year(db, year):
 				continue
 
 		print ("COUNT LIST = ", count_list)
-		sorted(count_list, key = getKey)
+		count_list.sort(key = getKey) #, reverse = True)
 		print ("SORTED COUNT LIST = ", count_list)
+		for jj in range(0, len(count_list)):
+			#print ("XXXXXX", count_list[jj][1])
+			x = count_list.pop()
+			count = x[1]
+			print ("count = ", count)
+			print ("POP COUNT LIST = ", count_list)
 
 	return None
 	# this function should return None
@@ -195,10 +201,6 @@ def rank_names_for_one_year(db, year):
 def getKey(item):
 	print ("item[1] = ", item[1])
 	return item[1]
-
-def test1(item):
-	print ("item[1] = ", item[0])
-	return item[0]
 
 def counter():
 	L = [("baby", 9999), ("aeuron", 100), ("pablo", 1234)]
@@ -250,14 +252,14 @@ def main():
 
 		new_names(db, gender, old_year, new_year)
 
-	"""all_years = get_all_years()
-	for jj in range(2, 3):
+	all_years = get_all_years()
+	for jj in range(0, len(all_years)):
 		year = all_years[jj]
-		rank_names_for_one_year(db, year)"""
+		rank_names_for_one_year(db, year)
 	#counter()
-	L = [("baby", 9999), ("aeuron", 100), ("pablo", 1234)]
-	sorted(L, key=getKey)
-	print ("L = ", L)
+	#L = [("baby", 9999), ("aeuron", 100), ("pablo", 1234)]
+	#sorted(L, key=getKey
+	#print ("L = ", L)
 
 if __name__ == '__main__':
 	main()
